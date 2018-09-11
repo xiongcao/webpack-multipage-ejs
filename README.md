@@ -6,7 +6,7 @@
 2. 将css和js分离为单独文件，提取js和css公共代码
 3. 对打包后的js和css文件进行了最大程度的压缩
 4. 对html、js、css、图片和字体进行了多级目录打包
-5. 集成了ejs模板引擎
+5. 集成了jquery和ejs模板引擎
 
 ### 命令使用
 1. build 打包项目
@@ -23,3 +23,6 @@
 ### webpack4弃用extract-text-webpack-plugin推荐使用mini-css-extract-plugin分离css问题：
 1. mini-css-extract-plugin和style-loader无法共存。npm官方说明：This plugin should be used only on production builds without style-loader in the loaders chain, especially if you want to have HMR in development.
 2. 由于mini-css-extract-plugin和style-loader无法共存，为保证在开发阶段实现css热替换，将使用style-loader不适用mini-css-extract-plugin，所以在开发阶段无法将css分离。
+
+### 注意：
+1. 本项目使用了jquery，但是没有用expose-loader来解析，不知道webpack4是不是默认解析的；

@@ -101,6 +101,10 @@ module.exports = {
                     loader: 'html-loader'
                 }]
             },
+            {
+                test: /\.(ejs|tpl)$/,
+                use: 'ejs-loader'
+            }
         ]
     },
     resolve: {
