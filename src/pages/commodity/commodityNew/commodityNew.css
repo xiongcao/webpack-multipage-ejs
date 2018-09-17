@@ -1,4 +1,6 @@
-@import '@css/public.scss';
+@import '~@css/public.scss';
+/* @import '@css/base.css'; */
+/* @import '../../../common/css/public.scss'; */
 .commodityNew{
     color: blue;
 }

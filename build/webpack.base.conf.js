@@ -2,7 +2,7 @@ const path = require('path');
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //重新生成dist/index.html
-// const ExtractTextPlugin = require("extract-text-webpack-plugin"); //分离css(与 webpack 4 不太兼容)
+const ExtractTextPlugin = require("extract-text-webpack-plugin"); //分离css(与 webpack 4 不太兼容)
 const MiniCssExtractPlugin = require('mini-css-extract-plugin'); //打包分离css
 const utils = require('./utils.js');
 const devMode = process.env.NODE_ENV !== 'production';
@@ -16,16 +16,16 @@ module.exports = {
     output: {
         filename: 'js/[name]-[hash].js',
         path: path.resolve(__dirname, '../dist'),
-        // publicPath: './'    //有这个的话开发环境需要指定服务器从打包后的静态文件读取
+        publicPath: '../'    //有这个的话开发环境需要指定服务器从打包后的静态文件读取
     },
     mode: process.env.NODE_ENV,
     plugins: [
-        // new ExtractTextPlugin({
-        //     filename: 'css/[name].css'
-        // }),
-        new MiniCssExtractPlugin({
-            filename: 'css/[name]-[hash].css'
+        new ExtractTextPlugin({
+            filename: 'css/[name].css'
         }),
+        // new MiniCssExtractPlugin({
+        //     filename: 'css/[name]-[hash].css'
+        // }),
         //复制icon
         new CopyWebpackPlugin([{
             from: path.resolve(__dirname, '../favicon.ico'),
@@ -34,39 +34,43 @@ module.exports = {
     ],
     module: {
         rules: [{
-                // test: /\.css$/,
-                // use: ExtractTextPlugin.extract({
-                //     fallback: "style-loader",
-                //     use:['css-loader','postcss-loader'],
-                //     publicPath:'../' //解决css背景图的路径问题
-                // }),
-                test: /\.(le|sc|c)ss$/,
-                use: [{
-                        loader: devMode ? 'style-loader' : MiniCssExtractPlugin.loader, //开发有css热更新，没有css分离；生产有css分离；
-                        options: devMode ? {} : {
-                            publicPath: '../'
-                        }
-                    },
-                    {
-                        loader: 'css-loader'
-                    },
-                    {
-                        loader: 'postcss-loader'
-                    },
-                    {
-                        loader: 'sass-loader'
-                    }
-                ],
-                include: path.join(__dirname, '../src'), //限制范围，提高打包速度
+                test: /\.css$/,
+                use: ExtractTextPlugin.extract({
+                    use: ['css-loader', 'postcss-loader'],
+                    fallback: 'style-loader',
+                    // publicPath: '../'
+                }),
+                // test: /\.(le|sc|c)ss$/,
+                // use: [{
+                //         loader: devMode ? 'style-loader' : MiniCssExtractPlugin.loader, //开发有css热更新，没有css分离；生产有css分离；
+                //         options: devMode ? {} : {
+                //             publicPath: '../'
+                //         }
+                //     },
+                //     {
+                //         loader: 'css-loader'
+                //     },
+                //     {
+                //         loader: 'postcss-loader'
+                //     },
+                //     {
+                //         loader: 'sass-loader'
+                //     }
+                // ],
+                // include: path.join(__dirname, '../src'), //限制范围，提高打包速度
             },
-            // {
-            //     test: /\.scss$/,
-            //     exclude: /(node_modules|bower_components)/,
-            //     // use: ExtractTextPlugin.extract({
-            //     //     fallback: "style-loader",
-            //     //     use: ['css-loader', 'sass-loader']
-            //     // })
-            // },
+            {
+                test: /\.scss$/,
+                exclude: /(node_modules|bower_components)/,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [
+                        'css-loader',
+                        'postcss-loader',
+                        'sass-loader'
+                    ]
+                })
+            },
             {
                 test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
