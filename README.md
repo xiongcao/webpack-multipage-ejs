@@ -23,6 +23,3 @@
 ### webpack4弃用extract-text-webpack-plugin推荐使用mini-css-extract-plugin分离css问题：
 1. mini-css-extract-plugin和style-loader无法共存。npm官方说明：This plugin should be used only on production builds without style-loader in the loaders chain, especially if you want to have HMR in development.
 2. 由于mini-css-extract-plugin和style-loader无法共存，为保证在开发阶段实现css热替换，将使用style-loader不适用mini-css-extract-plugin，所以在开发阶段无法将css分离。
-
-### 注意：
-1. 本项目使用了jquery，但是没有用expose-loader来解析，不知道webpack4是不是默认解析的；

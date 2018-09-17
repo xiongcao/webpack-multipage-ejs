@@ -104,6 +104,21 @@ module.exports = {
             {
                 test: /\.(ejs|tpl)$/,
                 use: 'ejs-loader'
+            },
+            {
+                test: require.resolve('jquery'),
+                use: [{
+                        loader: 'expose-loader',
+                        options: 'jQuery'
+                    }, {
+                        loader: 'expose-loader',
+                        options: '$'
+                    },
+                    {
+                        loader: 'expose-loader',
+                        options: 'window.jQuery'
+                    }
+                ]
             }
         ]
     },
